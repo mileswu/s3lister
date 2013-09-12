@@ -1,0 +1,22 @@
+<html>
+<head>
+	<title>Testing</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script>
+$.get("https://s3.amazonaws.com/dokibox-builds/", function(data) {
+	var xml = $(data);
+	xml.find("Key").each( function() {
+		var t = $(this).text();
+		$("ul").append("<li><a href=https://s3.amazonaws.com/dokibox-builds/" + t + ">" + t + "</a></li>");
+	});
+
+})
+	</script>
+</head>
+<body>
+	<h1>Listing</h1>
+	<ul>
+	</ul>
+
+</body>
+</html>
