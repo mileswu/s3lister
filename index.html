@@ -7,7 +7,9 @@ $.get("https://s3.amazonaws.com/dokibox-builds/", function(data) {
 	var xml = $(data);
 	xml.find("Key").each( function() {
 		var t = $(this).text();
-		$("ul").append("<li><a href=https://s3.amazonaws.com/dokibox-builds/" + t + ">" + t + "</a></li>");
+		if(t.indexOf(".tar.gz") != -1) {
+			$("ul").append("<li><a href=https://s3.amazonaws.com/dokibox-builds/" + t + ">" + t + "</a></li>");
+		}
 	});
 
 })
