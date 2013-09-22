@@ -1,5 +1,6 @@
-items = []
 now = new Date()
+items = {}
+currentBranch = "master"
 builds = $("#builds")
 repo = "https://github.com/mileswu/dokibox/commit/"
 $.get "https://s3.amazonaws.com/dokibox-builds/", (data) ->
@@ -7,13 +8,13 @@ $.get "https://s3.amazonaws.com/dokibox-builds/", (data) ->
 	for c in [contents.length-1..0] by -1
 		content = $(contents[c])
 		if content.find("Key").text()[-7..-1] is ".tar.gz"
-			items.push parseContents content
-	for item in items
-		if item.file.branch is 'master'
+			item = parseContents content
+			items[item.file.branch] = {} unless items[item.file.branch]
+			items[item.file.branch][item.file.commit] = item
+	for commit, item of items[currentBranch]
 			builds.append """
 				<li class="branch-#{item.file.branch} entry">
 						<div class="size">#{item.size}</div>
-						<div class="info">Built #{item.date.text}</div>
 						<a href="#{repo}#{item.file.commit}">
 							<div class="commit">
 								<img src="github-32.png">
